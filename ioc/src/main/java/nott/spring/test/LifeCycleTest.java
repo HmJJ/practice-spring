@@ -48,6 +48,7 @@ import java.util.Map;
  *      postProcessAfterInitialization：在初始化之后工作
  *
  * Spring底层对BeanPostProcessor的使用
+ *      bean赋值，注入其他组件，@Autowired，生命周期注解功能，@Async等       BeanPostProcessor
  *
  */
 public class LifeCycleTest {
