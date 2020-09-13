@@ -7,7 +7,7 @@
 
     <!-- 包扫描、只要标注了@Controller、@Service、@Repository、@Component -->
     <!--<context:component-scan base-package="nott.spring" use-default-filters="false"></context:component-scan>-->
-    <bean id="person" class="nott.spring.code.bean.Person" scope="prototype">
+    <bean id="person" class="nott.spring.ioc.code.bean.Person" scope="prototype">
         <property name="age" value="18"></property>
         <property name="name" value="nott"></property>
     </bean>
