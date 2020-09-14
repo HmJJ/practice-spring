@@ -56,7 +56,7 @@ import java.util.Map;
  *  流程：
  *      1、传入配置类，创建IOC容器
  *      2、注册配置类，调用refresh()刷新容器
- *      3、registerBeanPostProcessors(beanFactory);注册bean的后置处理器来方边拦截bean的创建
+ *      3、registerBeanPostProcessors(beanFactory);注册bean的后置处理器来方便拦截bean的创建
  *          a）先获取IOC容器中已经定义了的需要创建对象的所有BeanPostProcessor
  *          b）给容器中加别的BeanPostProcessor
  *          c）优先注册实现了PriorityOrdered接口的BeanPostProcessor
@@ -73,7 +73,7 @@ import java.util.Map;
  *                  4）applyBeanPostProcessorsAfterInitialization：执行后置处理器的applyBeanPostProcessorsAfterInitialization
  *              4）BeanPostProcessor（AnnotationAwareAspectjAutoProxyCreator）创建成功；--> aspectJAdvisorsBuilder
  *          g）把BeanPostProcessor注册到BeanFactory中：
- *              beanFactory。addBeanPostProcessor(postProcessor)
+ *              beanFactory.addBeanPostProcessor(postProcessor)
  * =========以上是创建和注册AnnotationAwareAspectjAutoProxyCreator的过程===============
  *        AnnotationAwareAspectjAutoProxyCreator -> InstantiationAwareBeanPostProcessor
  *      4）finishBeanFactoryInitialization(beanFactory);完成BeanFactory初始化工作，创建剩下的单实例bean
@@ -86,7 +86,7 @@ import java.util.Map;
  *              2）createBean()；创建bean，AnnotationAwareAspectjAutoProxyCreator会在任何bean创建之前先返回bean的实例
  *                  [BeanPostProcessor是在Bean对象创建完成初始化前后调用的]
  *                  [InstantiationAwareBeanPostProcessor实在创建Bean实例之前先尝试用后置处理器返回代理对象的]
- *                  1）resolveBeforeInstantiation(beanName, mbdToUse);解析BeforeInstantiation
+ *                  a）resolveBeforeInstantiation(beanName, mbdToUse);解析BeforeInstantiation
  *                      希望后置处理器在此能返回一个代理对象：如果能就使用，如果不能就继续
  *                      1）后置处理器先尝试返回对象
  *                          bean = this.applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
@@ -94,7 +94,17 @@ import java.util.Map;
  *                          if (bean != null) {
  *                              bean = this.applyBeanPostProcessorsAfterInitialization(bean, beanName);
  *                          }
- *                  2）doCreateBean(beanName, mbdToUse, args);真正的去创建一个bean实例，和3.6流程一样
+ *                  b）doCreateBean(beanName, mbdToUse, args);真正的去创建一个bean实例，和3.6流程一样
+ *                  c）
+ *   AnnotationAwareAspectJAutoProxyCreator [InstantiationAwareBeanPostProcessor]的作用：
+ *      1）每一个bean创建之前，调用postProcessBeforeInstantiation()
+ *          MathCalculator和LogAspect的创建
+ *          a）判断当前bean是否在advisedBeans中（保存了所有需要增强的bean）
+ *          b）判断当前bean是否是基础类型的Advice、PointCut、Advisor、AopInfrastructureBean，
+ *              或者是否是切面（@Aspect）
+ *          c）判断是否需要跳过
+ *              1）获取候选的增强器（切面里面的通知方法） [List<Advisor> candidateAdvisors]
+ *                  每一个封装的通知方法的增强器是InstantiationModelAwarePointcutAdvisor
  */
 public class AopTest {
 
