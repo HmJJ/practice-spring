@@ -105,6 +105,13 @@ import java.util.Map;
  *          c）判断是否需要跳过
  *              1）获取候选的增强器（切面里面的通知方法） [List<Advisor> candidateAdvisors]
  *                  每一个封装的通知方法的增强器是InstantiationModelAwarePointcutAdvisor
+ *                  判断每一个增强器是否是AspectJPointcutAdvisor类型的，返回true
+ *              2）永远返回false
+ *      2）创建对象，调用postProcessAfterInstantiation()
+ *          return wrapIfNecessary(bean, beanName, cacheKey);//包装如果需要的情况下
+ *          a）获取当前bean的所有增强器（通知方法）
+ *              找到能在当前bean使用的增强器（找哪些通知方法是需要切入当前bean方法的）
+ *
  */
 public class AopTest {
 
