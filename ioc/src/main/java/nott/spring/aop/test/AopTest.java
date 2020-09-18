@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,6 +127,33 @@ public class AopTest {
         mathCalculator.div(1, 1);
 
         applicationContext.close();
+    }
+
+    @Test
+    public void test02() {
+        List<Integer> list1 = new ArrayList<Integer>();
+        List<Integer> list2 = new ArrayList<Integer>();
+        for (int i=0; i<10; i++) {
+            list1.add(i);
+            if (i<5) {
+                list2.add(i);
+            }
+        }
+        System.out.println(list1);
+        System.out.println(list2);
+        List<Integer> list3 = list1.subList(list2.size(), list1.size());
+        System.out.println(list3);
+    }
+
+    @Test
+    public void test03() {
+        String str1 = "JDCLetterExcelConcrete";
+        String firstWord = str1.substring(0, 1);
+        firstWord = firstWord.toLowerCase();
+        String otherWord = str1.substring(1);
+        System.out.println(firstWord);
+        System.out.println(otherWord);
+        System.out.println(firstWord+otherWord);
     }
 
 }
